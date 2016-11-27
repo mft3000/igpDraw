@@ -1,89 +1,108 @@
 
-# ver 0.1
+# ver 0.2
 #
 # changelog
 #
 # 0.1 start init
+# 0.2 graph ok
 #
-
-import networkx as nx
-import matplotlib.pyplot as plt
 
 class Discovery(object):
 
 	json = {
-		'R1': {
-			'rid' : '172.31.1.1',
+		'172.31.1.1': {
+			'hostname' : 'LA',
+			'os' : 'ios',
 			'path' : {
-				'R2': {
-					'int' : 'e0.12', 
+				'e0.12': {
+					'rid' : '172.31.2.2', 
+					'area' : '0',
 					'cost' : '1',
-					'net' : 'p2p'
+					'net' : 'point-to-point'
 				},
-				'R3': {
-					'int' : 'e0.13', 
+				'e0.13': {
+					'rid' : '172.31.3.3', 
+					'area' : '0',
 					'cost' : '1',
-					'net' : 'p2p'
+					'net' : 'point-to-point'
 				}
 			}
 		},
-		'R2': {
-			'rid' : '172.31.2.2',
+		'172.31.2.2': {
+			'hostname' : 'SA',
+			'os' : 'ios',
 			'path' : {
-				'R1': {
-					'int' : 'e0.12', 
-					'cost' : '1',
-					'net' : 'p2p'
+				'e0.12': {
+					'rid' : '172.31.1.1', 
+					'area' : '0',
+					'cost' : '2',
+					'net' : 'point-to-point'
 				},
-				'R4': {
-					'int' : 'e0.24', 
-					'cost' : '10',
-					'net' : 'p2p'
+				'e0.24': {
+					'rid' : '172.31.4.4', 
+					'area' : '0',
+					'cost' : '2',
+					'net' : 'point-to-point'
 				},
-				'R5': {
-					'int' : 'e0.25', 
-					'cost' : '1',
-					'net' : 'p2p'
+				'e0.23': {
+					'rid' : '172.31.3.3', 
+					'area' : '0',
+					'cost' : '2',
+					'net' : 'point-to-point'
 				}
 			}
 		},
-		'R3': {
-			'rid' : '172.31.3.3',
+		'172.31.3.3': {
+			'hostname' : 'SF',
+			'os' : 'xr',
 			'path' : {
-				'R1': {
-					'int' : 'e0.13', 
-					'cost' : '1',
-					'net' : 'p2p'
+				'e0.13': {
+					'rid' : '172.31.1.1', 
+					'area' : '0',
+					'cost' : '2',
+					'net' : 'point-to-point'
+				},
+				'e0.23': {
+					'rid' : '172.31.2.2', 
+					'area' : '0',
+					'cost' : '2',
+					'net' : 'point-to-point'
 				}
 			}
 		},
-		'R4': {
-			'rid' : '172.31.4.4',
+		'172.31.4.4': {
+			'hostname' : 'NY',
+			'os' : 'ios',
 			'path' : {
-				'R2': {
-					'int' : 'e0.24', 
-					'cost' : '10',
-					'net' : 'p2p'
-				},
-				'R5': {
-					'int' : 'e0.45', 
+				'e0.12': {
+					'rid' : '172.31.2.2', 
+					'area' : '0',
 					'cost' : '1',
-					'net' : 'p2p'
+					'net' : 'point-to-point'
+				},
+				'e0.18': {
+					'rid' : '172.31.5.5', 
+					'area' : '0',
+					'cost' : '1',
+					'net' : 'point-to-point'
 				}
 			}
 		},
-		'R5': {
-			'rid' : '172.31.5.5',
+		'172.31.5.5': {
+			'hostname' : 'CHI',
+			'os' : 'xr',
 			'path' : {
-				'R2': {
-					'int' : 'e0.25', 
-					'cost' : '1',
-					'net' : 'p2p'
+				'e0.12': {
+					'rid' : '172.31.4.4', 
+					'area' : '0',
+					'cost' : '100',
+					'net' : 'point-to-point'
 				},
-				'R4': {
-					'int' : 'e0.45', 
-					'cost' : '1',
-					'net' : 'p2p'
+				'e0.15': {
+					'rid' : '172.31.3.3', 
+					'area' : '0',
+					'cost' : '100',
+					'net' : 'point-to-point'
 				}
 			}
 		}
