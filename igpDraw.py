@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# ver 0.61
+# ver 0.65
 #
 # changelog
 #
@@ -12,6 +12,7 @@
 # 0.51 minor fix
 # 0.55 add control in -c number of elements
 # 0.61 add -r and --cmd to query device and show results (eg. show ip route 1.1.1.1)
+# 0.65 bug fix
 #
 
 import argparse, os
