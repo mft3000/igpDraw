@@ -1,15 +1,17 @@
+#!/usr/bin/env python
 
-# ver 0.4
+# ver 0.5
 #
 # changelog
 #
 # 0.1 start init
 # 0.2 graph ok
 # 0.3 move to obj, add draw options, add argparse, add demo, add read .list, add read .json
-#>0.4 edit variables, add show ospf commands 
+# 0.4 edit variables, add show ospf commands 
+# 0.5 device telnet, discovery and build json
 #
 
-import argparse
+import argparse, os
 
 from lib_app import NetDiscovery
 
@@ -23,8 +25,10 @@ def main():
 	parser.add_argument("-n", "--nodelabel", choices=["hostname", "rid"], default = "hostname")
 	parser.add_argument("-a", "--adjlabel", choices=["cost", "int", "area", "netype" ], default = "cost")
 	parser.add_argument("-f", "--filename", default = "path.png")
+	parser.add_argument("--demo", action='store_true', default = False)
+	parser.add_argument("-s", "--save", action='store_true', default = False)
 
-	parser.add_argument("--community", default = "pubblic")
+	parser.add_argument("--community", default = '' )
 
 	args = parser.parse_args()
 	
@@ -36,6 +40,10 @@ def main():
 	nodelabel = args.nodelabel
 	jsonFile = args.json
 	cli_input_list = args.clilist
+	demo = args.demo
+	save = args.save
+
+	community = os.environ['PYCOMM'] if args.community == '' else args.community
 
 	ilist = []
 
@@ -62,7 +70,7 @@ def main():
 
 		for node in cli_input_list_variable:
 			print( 'retrieve %s info under %s' % (igp, node) )
-			d.igp( igp, node, save_as_file = False)
+			d.igp( igp, node, save_as_file = save, demo = demo, community = community )
 	else:
 		print 'Nothing to do... exiting'
 		exit()
