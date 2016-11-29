@@ -16,6 +16,12 @@ import argparse, os
 
 from igpDrawLib import NetDiscovery
 
+def lenCheck(obj):
+
+	if len(obj) < 2:
+		print 'WARNING: only one node to draw... exiting'
+		exit(0)
+
 def main():
 
 	parser = argparse.ArgumentParser(description="")
@@ -56,12 +62,15 @@ def main():
 
 		if '.list' not in ''.join(cli_input_list):
 
+			lenCheck(cli_input_list)
+
 			cli_input_list_variable = cli_input_list
 
 		else:
 
 			try:
 				with open(''.join(cli_input_list)) as cli_input_list_as_file:
+					lenCheck(cli_input_list_as_file.read().splitlines())
 					cli_input_list_variable = cli_input_list_as_file.read().splitlines()
 			except:
 				print 'file does not exist'
