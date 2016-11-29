@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# ver 0.51
+# ver 0.61
 #
 # changelog
 #
@@ -10,11 +10,14 @@
 # 0.4 edit variables, add show ospf commands 
 # 0.5 device telnet, discovery and build json
 # 0.51 minor fix
+# 0.55 add control in -c number of elements
+# 0.61 add -r and --cmd to query device and show results (eg. show ip route 1.1.1.1)
 #
 
 import argparse, os
 
-from igpDrawLib import NetDiscovery
+from igpDrawLib import NetDiscovery, auth_cred
+from igp import Device
 
 def lenCheck(obj):
 
@@ -37,6 +40,9 @@ def main():
 
 	parser.add_argument("--community", default = '' )
 
+	parser.add_argument("-r","--router", default = '' )
+	parser.add_argument("--cmd", nargs = '+', default = None )
+
 	args = parser.parse_args()
 	
 	##################################################
@@ -49,6 +55,17 @@ def main():
 	cli_input_list = args.clilist
 	demo = args.demo
 	save = args.save
+
+	cmd = args.cmd
+	router = args.router
+
+	if cmd:
+		dev = Device(router)
+
+		credentials = auth_cred('local', True)
+		status = dev.remote_connect(credentials)
+
+		print dev.remote_execute(' '.join(cmd))
 
 	community = os.environ['PYCOMM'] if args.community == '' else args.community
 
