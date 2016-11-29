@@ -1,9 +1,11 @@
+#!/usr/bin/env python
 
-# ver 0.1
+# ver 0.11
 #
 # changelog
 #
 # 0.1 start init
+# 0.11 minor fix
 # 
 
 # import argparse, os, logging
