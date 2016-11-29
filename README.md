@@ -60,7 +60,7 @@ g. use '-r' and '--cmd' to query device and show results
 	  Known via "ospf 201", distance 110, metric 6, type intra area
 	  Last update from 10.123.1.246 on TenGigabitEthernet0/0.10, 2w2d ago
 	  Routing Descriptor Blocks:
-	  * 10.123.1.246, from 10.124.12.247, 2w2d ago, via TenGigabitEthernet0/3.10
+	  * 10.123.1.246, from 10.124.12.247, 2w2d ago, via TenGigabitEthernet0/0.10
 	      Route metric is 6, traffic share count is 1
 	      
 	Nothing to do... exiting
