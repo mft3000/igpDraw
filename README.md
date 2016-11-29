@@ -30,7 +30,8 @@ b. inline node list '-c'
 		python igpDraw.py --demo -c []
 		```
 
-	4. use '-s' to save the the discovery (even for themo) as 'auto_save_file.json'. in this way you can load configuration again with '-j' option
+	4. use '-s' to save the the discovery (even for demo) as 'auto_save_file.json'. 
+	in this way you can load configuration again with '-j' option
 
 		```
 		python igpDraw.py -c 1.1.1.1 2.2.2.2 3.3.3.3 4.4.4.4 -s
