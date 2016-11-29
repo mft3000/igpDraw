@@ -27,7 +27,7 @@
 				"e0.12": {
 					"rid" : "172.31.1.1", 
 					"area" : "0",
-					"cost" : "2",
+					"cost" : "200",
 					"netype" : "POINT_TO_POINT",
 					"state" : "Up"
 				},
@@ -101,7 +101,7 @@
 				"e0.12": {
 					"rid" : "172.31.4.4", 
 					"area" : "0",
-					"cost" : "100",
+					"cost" : "60",
 					"netype" : "POINT_TO_POINT",
 					"state" : "Up"
 				},
