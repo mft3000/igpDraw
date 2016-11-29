@@ -30,6 +30,12 @@ b. inline node list '-c'
 		python igpDraw.py --demo -c []
 		```
 
+	4. use '-s' to save the the discovery (even for themo) as 'auto_save_file.json'. in this way you can load configuration again with '-j' option
+
+		```
+		python igpDraw.py -c 1.1.1.1 2.2.2.2 3.3.3.3 4.4.4.4 -s
+		```
+
 c. by defaults the connections lines will carry igp cost informations. with '-a' you can specify what draw in the image {cost,int,area,netype}
 
 	interface name
