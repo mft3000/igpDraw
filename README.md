@@ -64,6 +64,16 @@ f. choose IGP protocol (only OSPF for now)
 	python igpDraw.py --demo -c [] -I OSPF
 	```
 
+g. user '-r' and '--cmd' to query device and show results
+
+	```
+	python igpDraw.py -r 10.64.0.250 --cmd sh ip ro 1.1.1.1
+	sh ip ro 1.1.1.1
+	% Network not in table
+
+	Nothing to do... exiting
+	```
+
 ## json schema
 ```
 {
