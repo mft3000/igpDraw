@@ -31,7 +31,7 @@ b. inline node list '-c'
 		```
 
 	4. use '-s' to save the the discovery (even for demo) as 'auto_save_file.json'. 
-	in this way you can load configuration again with '-j' option
+	   in this way you can load configuration again with '-j' option
 
 		```
 		python igpDraw.py -c 1.1.1.1 2.2.2.2 3.3.3.3 4.4.4.4 -s
@@ -103,7 +103,8 @@ g. use '-r' and '--cmd' to query device and show results
 ```
 ## To Do List
 
-1. ISIS as another IGP protocol
-2. SNMP for retrieve IGP informations
-3. API REST with flask
-4. draw dotten line if the link is not primary (cost too high): draw a tree
+1. more accurate images with multiarea info ecc..
+2. ISIS as another IGP protocol
+3. SNMP for retrieve IGP informations
+4. API REST with flask
+5. draw dotten line if the link is not primary (cost too high): draw a tree
