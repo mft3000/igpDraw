@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# ver 0.5
+# ver 0.51
 #
 # changelog
 #
@@ -9,11 +9,12 @@
 # 0.3 move to obj, add draw options, add argparse, add demo, add read .list, add read .json
 # 0.4 edit variables, add show ospf commands 
 # 0.5 device telnet, discovery and build json
+# 0.51 minor fix
 #
 
 import argparse, os
 
-from lib_app import NetDiscovery
+from igpDrawLib import NetDiscovery
 
 def main():
 
