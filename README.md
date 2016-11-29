@@ -7,7 +7,7 @@ Quick and dirty script with the purpose of retrieving igp adjiaciencies paramete
 a. from json '-j'
 
 	```
-	python igpDraw.py -c topology.list
+	python igpDraw.py -j topology.json
 	```
 
 b. inline node list '-c'
