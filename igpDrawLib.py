@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# ver 0.61
+# ver 0.66
 #
 # changelog
 #
@@ -11,6 +11,7 @@
 # 0.5 device telnet, discovery and build json
 # 0.6 randominze interface name for demo mode and reduce name in draw
 # 0.61 draw only adjacencies between specified rid's nodes
+# 0.66 add --spf to calculate route
 #
 
 import collections, json, re, os
