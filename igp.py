@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
-# ver 0.11
+# ver 0.2
 #
 # changelog
 #
 # 0.1 start init
 # 0.11 minor fix
+# 0.2 adjust in retrive ospf data functions
 # 
 
 # import argparse, os, logging
@@ -261,6 +262,8 @@ class OSPF(Device):
 
 	igpNeighbors = tree()
 
+	intfLists = []
+
 	def set_hostname(self, os = 'ios'):
 
 		raws = self.remote_execute("term len 0")
@@ -330,8 +333,6 @@ class OSPF(Device):
 
 	def show_ospf_neighbor(self, os = 'ios'):
 
-		self.show_ospf()
-
 		raws = self.remote_execute("show ip ospf neighbor")
 
 # 		raws = '''10.199.199.137  1    FULL/DR       0:00:31    192.168.80.37      Ethernet0
@@ -344,6 +345,7 @@ class OSPF(Device):
 			if re.search('^\d+.', line):
 				logging.debug( line ) 
 				intf = line.split()[-1]
+				self.intfLists.append( intf )
 				self.igpNeighbors[self.pid][self.rid]['path'][intf]['state'] = line.split()[2]
 				self.igpNeighbors[self.pid][self.rid]['path'][intf]['rid'] = line.split()[0]
 
@@ -351,7 +353,7 @@ class OSPF(Device):
 
 	def show_ospf_interface(self, os = 'ios'):
 
-		self.show_ospf_neighbor()
+		self.show_ospf()
 
 		raws = self.remote_execute("show ip ospf interface")
 		
@@ -397,16 +399,36 @@ class OSPF(Device):
 		self.igpNeighbors[self.pid][self.rid]["hostname"] = self.hostname
 		self.igpNeighbors[self.pid][self.rid]["os"] = "ios"
 
+		#print self.intfLists
+
+		intf = ''
+
 		for line in raws.splitlines():
+
 			if 'is up' in line:
 				# intf = "".join((line.split()[0], line.split()[1]))
 				intf = line.split()[0]
+
+				# if intf not in self.intfLists:
+				# 	break
 				continue
-			if 'Area' in line:
-				self.igpNeighbors[self.pid][self.rid]['path'][intf]['area'] = line.split(',')[-1].split()[1]
-			if 'Cost:' in line:
-				self.igpNeighbors[self.pid][self.rid]['path'][intf]['cost'] = line.split(',')[-1].split()[1]
-			if 'Network Type' in line:
-				self.igpNeighbors[self.pid][self.rid]['path'][intf]['netype'] = line.split(',')[-2].split()[2]
+
+			if 'Loopback' not in intf:
+				if 'Process ID' in line:
+					self.igpNeighbors[self.pid][self.rid]['path'][intf]['pid'] = line.split(',')[0].split()[-1]
+				if 'Router ID' in line:
+					self.igpNeighbors[self.pid][self.rid]['path'][intf]['rid'] = ''
+				if 'Area' in line:
+					self.igpNeighbors[self.pid][self.rid]['path'][intf]['area'] = line.split(',')[-1].split()[1]
+				if 'Cost:' in line:
+					self.igpNeighbors[self.pid][self.rid]['path'][intf]['cost'] = line.split(',')[-1].split()[1]
+				if 'Network Type' in line:
+					self.igpNeighbors[self.pid][self.rid]['path'][intf]['netype'] = line.split(',')[-2].split()[2]
+				if 'Neighbor Count is' in line:
+					self.igpNeighbors[self.pid][self.rid]['path'][intf]['NC'] = line.split(',')[0].split()[-1]
+				if 'Adjacent neighbor count is' in line:
+					self.igpNeighbors[self.pid][self.rid]['path'][intf]['ANC'] = line.split(',')[1].split()[-1]
+
+		self.show_ospf_neighbor()
 
 		return self.igpNeighbors
