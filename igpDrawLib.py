@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# ver 0.5
+# ver 0.6
 #
 # changelog
 #
@@ -9,6 +9,7 @@
 # 0.3 move to obj, add draw options, add argparse, add demo, add read .list, add read .json
 # 0.4 edit variables, add show ospf commands 
 # 0.5 device telnet, discovery and build json
+# 0.6 randominze interface name for demo mode and reduce name in draw
 #
 
 import collections, json, re, os
@@ -55,6 +56,21 @@ def reduce_netype(ntype):
 	else:
 		return ntype
 
+def reduce_interface_name(interface_name):
+	'''
+	reduce interface name for problems in draw visualization
+	'''
+	if 'FastEthernet' in interface_name:
+		return interface_name.replace('FastEthernet','Fa')
+	elif 'TenGigabitEthernet' in interface_name:
+		return interface_name.replace('TenGigabitEthernet','Te')
+	elif 'GigabitEthernet' in interface_name:
+		return interface_name.replace('GigabitEthernet','Gi')
+	elif 'Ethernet' in interface_name:
+		return interface_name.replace('Ethernet','Et')
+	else:
+		return interface_name
+
 class NetDiscovery(object):
 
 	jsonTree = tree()
@@ -69,6 +85,8 @@ class NetDiscovery(object):
 	'MD', 'ME', 'MI', 'MN', 'MO', 'MP', 'MS', 'MT', 'NC', 'ND', 'NE', 'NH', 
 	'NJ', 'NM', 'NV', 'NY', 'OH', 'OK', 'OR', 'PA', 'PR', 'RI', 'SC', 'SD', 
 	'TN', 'TX', 'UM', 'UT', 'VA', 'VI', 'VT', 'WA', 'WI', 'VW', 'WY' ]
+
+	interface_demo = [ 'Ethernet', 'FastEthernet', 'GigabitEthernet', 'TenGigabitEthernet' ]
 
 	def __init__(self, input_list = None, jsonFile = None):
 
@@ -104,7 +122,7 @@ class NetDiscovery(object):
 				 		"hostname" : self.demoRandom( self.demo_code , avoid_duplicates= True ), 
 				 		"os" : "ios",
 				 		"path" : {
-				 			"e0.12": {
+				 			self.demoRandom( self.interface_demo ) + "0/0" : {
 				 				"rid" : self.demoRandom( self.input_list ), 
 				 				"area" : "0",
 				 				"cost" : randint(1, 100),
@@ -186,9 +204,9 @@ class NetDiscovery(object):
 				elif edge_labl == 'area':
 					choose_what_show = self.jsonTree[pid][local_remote_rid]['path'][intf]['area']
 				elif edge_labl == 'netype':
-					choose_what_show = reduce_netype (self.jsonTree[pid][local_remote_rid]['path'][intf]['netype'])
+					choose_what_show = reduce_netype( self.jsonTree[pid][local_remote_rid]['path'][intf]['netype'] )
 				elif edge_labl == 'int':
-					choose_what_show = intf
+					choose_what_show = reduce_interface_name( intf )
 
 				labels_edge[(local_remote_rid, remote_remote_rid)] = choose_what_show
 				G.add_edge(local_remote_rid, remote_remote_rid)
