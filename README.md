@@ -2,7 +2,7 @@
 
 Quick and dirt script with the purpose of retrieving igp adjiaciencies parameters and draw it on an image for tshooting purpose
 
-![alt tag](https://github.com/mft3000/igpDraw/blob/master/path.png)
+![alt tag](https://github.com/mft3000/igpDraw/blob/master/ospf_doc.png)
 
 a. from json '-j'
 
