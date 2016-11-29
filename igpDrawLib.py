@@ -112,6 +112,36 @@ class NetDiscovery(object):
 
 		return choose
 
+	def generateDemo(self, node):
+
+		self.jsonTree["201"].update( {
+		 	node : {
+		 		"hostname" : self.demoRandom( self.demo_code , avoid_duplicates= True ), 
+		 		"os" : "ios",
+		 		"path" : {
+		 			self.demoRandom( self.interface_demo ) + "0/0" : {
+		 				"rid" : self.demoRandom( self.input_list ), 
+		 				"area" : "0",
+		 				"cost" : randint(1, 100),
+		 				"netype" : "POINT_TO_POINT",
+		 				"state" : "Up",
+		 				"NC" : "1",
+		 				"AC" : "1",
+		 				"pid" : "201",
+		 			},
+					self.demoRandom( self.interface_demo ) + "0/1" : {
+		 				"rid" : self.demoRandom( self.input_list ), 
+		 				"area" : "0",
+		 				"cost" : randint(1, 100),
+		 				"netype" : "POINT_TO_POINT",
+		 				"state" : "Up",
+		 				"NC" : "1",
+		 				"AC" : "1",
+		 				"pid" : "201",
+		 			},
+		 		}
+		 	}
+		} )
 
 	def igp(self, igp = 'ospf', node = None, demo = True, save_as_file = False , os = 'ios', community = 'pubblic' ):
 
@@ -119,24 +149,7 @@ class NetDiscovery(object):
 			if demo:
 				logging.info("generate json for node")
 
-				self.jsonTree["201"].update( {
-				 	node : {
-				 		"hostname" : self.demoRandom( self.demo_code , avoid_duplicates= True ), 
-				 		"os" : "ios",
-				 		"path" : {
-				 			self.demoRandom( self.interface_demo ) + "0/0" : {
-				 				"rid" : self.demoRandom( self.input_list ), 
-				 				"area" : "0",
-				 				"cost" : randint(1, 100),
-				 				"netype" : "POINT_TO_POINT",
-				 				"state" : "Up",
-				 				"NC" : "1",
-				 				"AC" : "1",
-				 				"pid" : "201",
-				 			}
-				 		}
-				 	}
-				} )
+				self.generateDemo(node)
 
 				print json.dumps(self.jsonTree, sort_keys=True, indent=4, separators=(',', ': '))
 
@@ -181,7 +194,7 @@ class NetDiscovery(object):
 
 	# 	asyncore.loop()
 
-	def draw(self, filename = 'path.png', host_labl = 'rid', edge_labl = 'cost'):
+	def draw(self, filename = 'path.png', host_labl = 'rid', edge_labl = 'cost', src = None, trgt = None):
 
 		G = nx.Graph()
 		labels = {}
@@ -217,7 +230,7 @@ class NetDiscovery(object):
 
 				if remote_remote_rid in self.jsonTree[pid].keys():
 					labels_edge[(local_remote_rid, remote_remote_rid)] = choose_what_show
-					G.add_edge(local_remote_rid, remote_remote_rid)
+					G.add_edge(local_remote_rid, remote_remote_rid, weight=self.jsonTree[pid][local_remote_rid]['path'][intf]['cost'])
 
 		pos = nx.spring_layout(G)
 
@@ -228,3 +241,35 @@ class NetDiscovery(object):
 
 		plt.savefig(filename)
 		logging.info( 'printing draw to %s' % (filename) )
+
+		if src != None and trgt != None:
+			"""
+			path cost calculation
+			"""
+			print 
+
+			result = nx.shortest_path(G, source=src, target=trgt)
+			print result
+			resultsA = result
+			resultsB = result
+
+			cost = 0
+
+			for s, e in zip(resultsA[:-1],resultsB[1:]):
+				print [s,e],
+				print int(G.edge[s][e]['weight'])
+				cost += int(G.edge[s][e]['weight'])
+			print cost
+
+			result = nx.shortest_path(G, source=trgt, target=src)
+			print result
+			resultsA = result
+			resultsB = result
+
+			cost = 0
+
+			for s, e in zip(resultsA[:-1],resultsB[1:]):
+				print [s,e],
+				print int(G.edge[s][e]['weight'])
+				cost += int(G.edge[s][e]['weight'])
+			print cost

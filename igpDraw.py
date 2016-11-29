@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# ver 0.65
+# ver 0.66
 #
 # changelog
 #
@@ -13,6 +13,7 @@
 # 0.55 add control in -c number of elements
 # 0.61 add -r and --cmd to query device and show results (eg. show ip route 1.1.1.1)
 # 0.65 bug fix
+# 0.66 add --spf to calculate route
 #
 
 import argparse, os
@@ -38,6 +39,7 @@ def main():
 	parser.add_argument("-f", "--filename", default = "path.png")
 	parser.add_argument("--demo", action='store_true', default = False)
 	parser.add_argument("-s", "--save", action='store_true', default = False)
+	parser.add_argument("--spf", nargs = '+', default = None )
 
 	parser.add_argument("--community", default = '' )
 
@@ -56,6 +58,10 @@ def main():
 	cli_input_list = args.clilist
 	demo = args.demo
 	save = args.save
+	if args.spf:
+		start_spf, target_spf = args.spf[0], args.spf[1]
+	else:
+		start_spf, target_spf = None, None
 
 	cmd = args.cmd
 	router = args.router
@@ -105,7 +111,7 @@ def main():
 		print 'Nothing to do... exiting'
 		exit()
 	
-	d.draw( filename = filename, host_labl = nodelabel, edge_labl = adj_show_choose )
+	d.draw( filename = filename, host_labl = nodelabel, edge_labl = adj_show_choose, src = start_spf, trgt = target_spf)
 
 if __name__ == "__main__":
 	main()
