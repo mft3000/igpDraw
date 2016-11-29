@@ -6,74 +6,54 @@ Quick and dirty script with the purpose of retrieving igp adjiaciencies paramete
 
 a. from json '-j'
 
-	```
+	
 	python igpDraw.py -j topology.json
-	```
+	
 
 b. inline node list '-c'
 
 	1. from file
 
-		```
 		python igpDraw.py -c topology.list
-		```
 
 	2. from cli
 
-		```
 		python igpDraw.py -c 1.1.1.1 2.2.2.2 3.3.3.3 4.4.4.4
-		```
 
 	3. simulate retrieve data from device '--demo'
 
-		```
 		python igpDraw.py --demo -c []
-		```
 
 	4. use '-s' to save the the discovery (even for demo) as 'auto_save_file.json'. 
 	   in this way you can load configuration again with '-j' option
 
-		```
 		python igpDraw.py -c 1.1.1.1 2.2.2.2 3.3.3.3 4.4.4.4 -s
-		```
 
 c. by defaults the connections lines will carry igp cost informations. with '-a' you can specify what draw in the image {cost,int,area,netype}
 
 	interface name
-	```
 	python igpDraw.py --demo -c [] -a int
-	```
+
 	area number
-	```
 	python igpDraw.py --demo -c [] -a area
-	```
 
 	area network type 
-	```
 	python igpDraw.py --demo -c [] -a netype
-	```
 
 d. draw 'rid' as node label '-n' (hostnames are defaults)
 
-	```
 	python igpDraw.py --demo -c [] -n rid
-	```
 
 e. specify output filename with '-f'
 
-	```
 	python igpDraw.py --demo -c [] -f topo.png
-	```
 
 f. choose IGP protocol (only OSPF for now)
 
-	```
 	python igpDraw.py --demo -c [] -I OSPF
-	```
 
 g. use '-r' and '--cmd' to query device and show results
 
-	```
 	python igpDraw.py -r 10.64.0.250 --cmd sh ip ro 10.124.12.247
 	sh ip ro 10.124.12.247
 	Routing entry for 10.124.12.247/32
@@ -84,7 +64,6 @@ g. use '-r' and '--cmd' to query device and show results
 	      Route metric is 6, traffic share count is 1
 	      
 	Nothing to do... exiting
-	```
 
 ## json schema
 ```
