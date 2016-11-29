@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# ver 0.6
+# ver 0.61
 #
 # changelog
 #
@@ -10,6 +10,7 @@
 # 0.4 edit variables, add show ospf commands 
 # 0.5 device telnet, discovery and build json
 # 0.6 randominze interface name for demo mode and reduce name in draw
+# 0.61 draw only adjacencies between specified rid's nodes
 #
 
 import collections, json, re, os
@@ -80,6 +81,7 @@ class NetDiscovery(object):
 	rid = ''
 	pid = ''
 
+
 	demo_code = [ 'AK', 'AL', 'AR', 'AS', 'AZ', 'CA', 'CO', 'CT', 'DC', 'DE', 
 	'FL', 'GA', 'GU', 'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 
 	'MD', 'ME', 'MI', 'MN', 'MO', 'MP', 'MS', 'MT', 'NC', 'ND', 'NE', 'NH', 
@@ -127,7 +129,10 @@ class NetDiscovery(object):
 				 				"area" : "0",
 				 				"cost" : randint(1, 100),
 				 				"netype" : "POINT_TO_POINT",
-				 				"state" : "Up"
+				 				"state" : "Up",
+				 				"NC" : "1",
+				 				"AC" : "1",
+				 				"pid" : "201",
 				 			}
 				 		}
 				 	}
@@ -142,9 +147,11 @@ class NetDiscovery(object):
 				credentials = auth_cred('local', True)
 				status = o.remote_connect(credentials)
 
-				self.jsonTree = o.show_ospf_interface()
+				if status:
 
-				o.remote_close()
+					self.jsonTree = o.show_ospf_interface()
+
+					o.remote_close()
 
 		elif igp == 'isis':
 			print 'Not Yet Developed... EXIT'
@@ -208,8 +215,9 @@ class NetDiscovery(object):
 				elif edge_labl == 'int':
 					choose_what_show = reduce_interface_name( intf )
 
-				labels_edge[(local_remote_rid, remote_remote_rid)] = choose_what_show
-				G.add_edge(local_remote_rid, remote_remote_rid)
+				if remote_remote_rid in self.jsonTree[pid].keys():
+					labels_edge[(local_remote_rid, remote_remote_rid)] = choose_what_show
+					G.add_edge(local_remote_rid, remote_remote_rid)
 
 		pos = nx.spring_layout(G)
 
