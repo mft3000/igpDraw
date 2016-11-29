@@ -79,7 +79,7 @@ def main():
 
 		if '.list' not in ''.join(cli_input_list):
 
-			lenCheck(cli_input_list)
+			# lenCheck(cli_input_list)
 
 			cli_input_list_variable = cli_input_list
 
@@ -87,11 +87,13 @@ def main():
 
 			try:
 				with open(''.join(cli_input_list)) as cli_input_list_as_file:
-					lenCheck(cli_input_list_as_file.read().splitlines())
+					# lenCheck(cli_input_list_as_file.read().splitlines())
 					cli_input_list_variable = cli_input_list_as_file.read().splitlines()
 			except:
 				print 'file does not exist'
 				exit()
+
+		lenCheck(cli_input_list_variable)
 
 		d = NetDiscovery( input_list = cli_input_list_variable )
 
